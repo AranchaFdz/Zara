@@ -8,59 +8,73 @@ use App\Models\Sales;
 
 class SalesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function indexSales()
     {
-        //
+        $sales = Sales::all();
+
+        return response()->json($sales);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function createSales()
     {
-        //
+        return view('sales.index');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreSalesRequest $request)
+    public function storeSales(StoreSalesRequest $request)
     {
-        //
+        $sales = new Sales();
+
+        $sales->start_date = $request->post('start_date');
+        $sales->end_date = $request->post('end_date');
+        $sales->price_list = $request->post('price_list');
+        $sales->brand_id = $request->post('brant_id');
+        $sales->product_id = $request->post('product_id');
+        $sales->price = $request->post('price');
+
+        $sales->save();
+
+        return redirect()->route('sales.index')->with('success', 'Sale created successfully');
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Sales $sales)
+    public function showSales(Sales $sales, $id)
     {
-        //
+        $sales = Sales::findOrFail($id);
+
+        return view('sales.show', compact('sales'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Sales $sales)
+    public function editSales(Sales $sales, $id)
     {
-        //
+        $sales = Sales::findOrFail($id);
+
+        return view('sales.edit', ['sales' => $sales]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateSalesRequest $request, Sales $sales)
+    public function updateSales(UpdateSalesRequest $request, Sales $sales, $id)
     {
-        //
+        $sales = Sales::findOrFail($id);
+        $sales->start_date = $request->input('start_date');
+        $sales->end_date = $request->input('end_date');
+        $sales->price_list = $request->input('price_list');
+        $sales->brand_id = $request->input('brant_id');
+        $sales->product_id = $request->input('product_id');
+        $sales->price = $request->input('price');
+
+        $sales->save();
+
+        return redirect()->route('sales.index')->with('success', 'Sale updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Sales $sales)
+    public function destroySales(Sales $sales, $id)
     {
-        //
+        $sales = Sales::find($id);
+
+        if (!$sales) {
+            return redirect()->route('sales.index')->withErrors('This sales does not exist');
+        }
+
+        $sales->delete();
+        return redirect()->route('sales.index')->with('success', 'Sale eliminated correctly');
     }
 }

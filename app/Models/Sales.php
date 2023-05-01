@@ -18,10 +18,7 @@ class Sales extends Model
         'brand_id',
         'product_id',
         'price',
-        'currency_id',
-        'created_at',
-        'updated_at',
-        'deleted_at',
+        'currency',
     ];
 
     public function products() {
@@ -32,7 +29,4 @@ class Sales extends Model
         return $this->hasMany(Brand::class);
     }
 
-    public function currency() {
-        return $this->hasMany(Currency::class);
-    }
 }

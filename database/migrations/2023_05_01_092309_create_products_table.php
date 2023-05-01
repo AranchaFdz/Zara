@@ -6,28 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id')->primary();
             $table->string('name');
             $table->text('description');
             $table->float('price', 10, 2);
-            $table->foreignId('brand_id')->constrained();
-            $table->foreignId('currency_id')->constrained();
-            $table->datetime('created_at');
-            $table->datetime('updated_at');
-            $table->datetime('deleted_at')->nullable();
+            $table->unsignedBigInteger('brand_id')->length(20)->nullable();
             $table->timestamps();
+
+            $table->foreign('brand_id')->references('id')->on('brands');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('products');
