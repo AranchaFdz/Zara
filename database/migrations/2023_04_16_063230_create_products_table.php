@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
@@ -17,11 +14,8 @@ return new class extends Migration
             $table->text('description');
             $table->float('price', 10, 2);
             $table->foreignId('brand_id')->constrained();
-            $table->foreignId('currency_id')->constrained();
-            $table->datetime('created_at');
-            $table->datetime('updated_at');
-            $table->datetime('deleted_at')->nullable();
             $table->timestamps();
+            $table->datetime('deleted_at')->nullable();
         });
     }
 
