@@ -16,10 +16,7 @@ class Products extends Model
         'description',
         'price',
         'brand_id',
-        'currency_id',
-        'created_at',
-        'updated_at',
-        'deleted_at',
+        'currency',
     ];
 
     public function sales() {

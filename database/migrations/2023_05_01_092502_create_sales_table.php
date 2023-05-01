@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('sales', function (Blueprint $table) {
@@ -16,20 +13,16 @@ return new class extends Migration
             $table->datetime('start_date');
             $table->datetime('end_date');
             $table->integer('price_list');
-            $table->foreignId('brand_id')->constrained();
-            $table->foreignId('product_id')->constrained();
+            $table->unsignedBigInteger('brand_id')->length(20)->nullable();
+            $table->unsignedBigInteger('product_id')->length(20)->nullable();
             $table->float('price', 10, 2);
-            $table->foreignId('currency_id')->constrained();
-            $table->datetime('created_at');
-            $table->datetime('updated_at');
-            $table->datetime('deleted_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('brand_id')->references('id')->on('brands');
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('sales');
