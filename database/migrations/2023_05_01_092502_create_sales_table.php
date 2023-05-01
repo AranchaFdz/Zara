@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('brand_id')->length(20)->nullable();
             $table->unsignedBigInteger('product_id')->length(20)->nullable();
             $table->float('price', 10, 2);
+            $table->string('currency');
             $table->timestamps();
             $table->datetime('deleted_at')->nullable();
 
