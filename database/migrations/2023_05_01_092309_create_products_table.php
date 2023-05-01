@@ -8,14 +8,12 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('sales', function (Blueprint $table) {
-            $table->id();
-            $table->datetime('start_date');
-            $table->datetime('end_date');
-            $table->integer('price_list');
-            $table->foreignId('brand_id')->constrained();
-            $table->foreignId('product_id')->constrained();
+        Schema::create('products', function (Blueprint $table) {
+            $table->unsignedBigInteger('id')->primary();
+            $table->string('name');
+            $table->text('description');
             $table->float('price', 10, 2);
+            $table->foreignId('brand_id')->constrained();
             $table->timestamps();
             $table->datetime('deleted_at')->nullable();
         });
@@ -23,6 +21,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('products');
     }
 };

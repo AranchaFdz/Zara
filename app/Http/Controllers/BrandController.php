@@ -8,59 +8,62 @@ use App\Models\Brand;
 
 class BrandController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function indexBrand()
     {
-        //
+        $brand = Brand::all();
+
+        return response()->json($brand);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function createBrand()
     {
-        //
+        return view('brand.index');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreBrandRequest $request)
+    public function storeBrand(StoreBrandRequest $request)
     {
-        //
+        $brand = new Brand();
+
+        $brand->name = $request->post('name');
+
+        $brand->save();
+
+        return redirect()->route('brand.index')->with('success', 'Brand created successfily');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Brand $brand)
+    public function showBrand(Brand $brand, $id)
     {
-        //
+        $brand = Brand::findOrFail($id);
+
+        return view('brand.show', compact('brand'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Brand $brand)
+    public function editBrand(Brand $brand, $id) 
     {
-        //
+        $brand = Brand::findOrFail($id);
+
+        return view('brand.edit', ['brand' => $brand]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateBrandRequest $request, Brand $brand)
+    public function updateBrand(UpdateBrandRequest $request, Brand $brand, $id)
     {
-        //
+        $brand = Brand::findOrFail($id);
+        $brand->name = $request->input('name');
+
+        $brand->save();
+
+        return redirect()->route('brand.index')->with('success', 'Brand updated successfily');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Brand $brand)
+    public function destroyBrand(Brand $brand, $id)
     {
-        //
+        $brand = Brand::find($id);
+
+        if (!$brand) {
+            return redirect()->route('brand.index')->withErrors('This brand does not exist');
+        }
+
+        $brand->delete();
+        return redirect()->route('brand.index')->with('success', 'Brand eliminated correctly');
     }
 }

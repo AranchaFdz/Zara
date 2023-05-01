@@ -8,22 +8,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id();
+        Schema::create('brands', function (Blueprint $table) {
+            $table->unsignedBigInteger('id')->primary();
             $table->string('name');
-            $table->text('description');
-            $table->float('price', 10, 2);
-            $table->foreignId('brand_id')->constrained();
             $table->timestamps();
             $table->datetime('deleted_at')->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('brands');
     }
 };

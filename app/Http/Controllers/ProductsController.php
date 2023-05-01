@@ -8,59 +8,68 @@ use App\Models\Products;
 
 class ProductsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function indexProducts()
     {
-        //
+        $products = Products::all();
+
+        return response()->json($products);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function createProducts()
     {
-        //
+        return view('products.index');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreProductsRequest $request)
+    public function storeProducts(StoreProductsRequest $request)
     {
-        //
+        $products = new Products();
+
+        $products->name = $request->post('name');
+        $products->description = $request->post('description');
+        $products->price = $request->post('price');
+        $products->brand_id = $request->post('brand_id');
+
+        $products->save();
+
+        return redirect()->route('products.index')->with('success', 'Product created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Products $products)
+    public function showProducts(Products $products, $id)
     {
-        //
+        $products = Products::findOrFail($id);
+
+        return view('products.show', compact('products'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Products $products)
+    public function editProducts(Products $products, $id)
     {
-        //
+        $products = Products::findOrFail($id);
+
+        return view('sales.edit', ['products' => $products]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateProductsRequest $request, Products $products)
+    public function updateProducts(UpdateProductsRequest $request, Products $products, $id)
     {
-        //
+        $products = Products::findOrFail($id);
+        $products->name = $request->input('name');
+        $products->description = $request->input('description');
+        $products->price = $request->input('price');
+        $products->brand_id = $request->input('brand_id');
+
+        $products->save();
+
+        return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Products $products)
+    public function destroyProducts(Products $products, $id)
     {
-        //
+        $products = Products::find($id);
+
+        if (!$products) {
+            return redirect()->route('products.index')->withErrors('This product does not exist');
+        }
+
+        $products->delete();
+        return redirect()->route('products.index')->with('success', 'Product eliminated correctly');
     }
 }
