@@ -14,6 +14,7 @@ return new class extends Migration
             $table->text('description');
             $table->float('price', 10, 2);
             $table->foreignId('brand_id')->constrained();
+            $table->string('currency');
             $table->timestamps();
             $table->datetime('deleted_at')->nullable();
         });
